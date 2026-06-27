@@ -1,4 +1,5 @@
-# Publish ONLY the guide. Keep everything else (personal files, dev helpers) private.
+# Publish ONLY the guides. Keep everything else (personal files, dev helpers) private.
 /*
 !index.html
+!sivka.html
 !.gitignore
