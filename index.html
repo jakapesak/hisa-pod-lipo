@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hiša pod lipo — Apartma Lipa</title>
+    <meta name="description" content="Apartma Lipa — Vodič za goste · Nova Gora nad Slovensko Bistrico">
+    <style>
+        :root {
+            --green-dark: #1b4332;
+            --green-mid: #2d6a4f;
+            --green-accent: #40916c;
+            --green-light: #74c69d;
+            --green-pale: #d8f3dc;
+            --bg: #f4f1eb;
+            --card: #ffffff;
+            --text: #2d3436;
+            --text-light: #636e72;
+            --text-muted: #b2bec3;
+            --radius: 14px;
+            --shadow: 0 2px 16px rgba(0,0,0,0.07);
+            --shadow-hover: 0 6px 24px rgba(0,0,0,0.13);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+
+        .lang-bar { background: var(--green-dark); padding: 10px 24px; display: flex; justify-content: flex-end; align-items: center; gap: 6px; }
+        .lang-bar span { color: rgba(255,255,255,0.45); font-size: 13px; margin-right: 6px; }
+        .lang-btn { background: transparent; border: 1.5px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.6); padding: 5px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600; letter-spacing: 0.4px; transition: all 0.2s; }
+        .lang-btn:hover { background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.45); }
+        .lang-btn.active { background: var(--green-light); border-color: var(--green-light); color: var(--green-dark); }
+
+        .hero { background: linear-gradient(160deg, var(--green-dark) 0%, var(--green-mid) 55%, var(--green-accent) 100%); color: white; padding: 72px 24px 90px; text-align: center; position: relative; overflow: hidden; }
+        .hero::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 44px; background: var(--bg); clip-path: ellipse(56% 100% at 50% 100%); }
+        .hero-logo { font-size: 58px; display: block; margin-bottom: 20px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.25)); }
+        .hero h1 { font-size: clamp(26px, 5vw, 44px); font-weight: 800; letter-spacing: -0.5px; margin-bottom: 14px; text-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .hero-subtitle { font-size: clamp(14px, 2.5vw, 17px); opacity: 0.82; max-width: 500px; margin: 0 auto; }
+
+        nav { background: white; position: sticky; top: 0; z-index: 200; display: flex; justify-content: center; gap: 4px; padding: 10px 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); flex-wrap: wrap; }
+        nav a { color: var(--text-light); text-decoration: none; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; transition: all 0.18s; white-space: nowrap; }
+        nav a:hover { background: var(--green-pale); color: var(--green-dark); }
+
+        main { max-width: 920px; margin: 0 auto; padding: 48px 20px 64px; }
+        section { margin-bottom: 64px; }
+
+        .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; padding-bottom: 16px; border-bottom: 2px solid var(--green-pale); }
+        .section-icon { width: 50px; height: 50px; background: var(--green-pale); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+        h2 { font-size: 26px; font-weight: 700; color: var(--green-dark); letter-spacing: -0.3px; }
+
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 12px; margin-bottom: 12px; }
+        .info-box { background: white; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); text-align: center; }
+        .info-box .i-icon { font-size: 32px; margin-bottom: 10px; }
+        .info-box .i-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); font-weight: 600; }
+        .info-box .i-value { font-size: 19px; font-weight: 700; color: var(--text); margin-top: 4px; }
+
+        .parking-note { background: var(--green-pale); border-radius: 10px; padding: 13px 17px; font-size: 14px; color: var(--green-dark); margin: 10px 0 20px; line-height: 1.65; }
+
+        .wifi-box { background: white; border-radius: var(--radius); padding: 22px 26px; box-shadow: var(--shadow); margin-bottom: 24px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+        .wifi-icon { font-size: 36px; flex-shrink: 0; }
+        .wifi-details { flex: 1; min-width: 200px; }
+        .wifi-row { display: flex; align-items: baseline; gap: 10px; margin: 5px 0; }
+        .wlabel { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); min-width: 88px; font-weight: 600; }
+        .wvalue { font-size: 16px; font-weight: 700; color: var(--green-dark); font-family: 'Courier New', monospace; }
+
+        .sub-header { display: flex; align-items: center; gap: 10px; margin: 28px 0 14px; }
+        .sub-icon { width: 36px; height: 36px; background: var(--green-pale); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+        .sub-header h3 { font-size: 18px; font-weight: 700; color: var(--green-dark); }
+
+        .rules-list { background: white; border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+        .rule-item { display: flex; align-items: flex-start; gap: 14px; padding: 15px 22px; border-bottom: 1px solid #f0f0f0; transition: background 0.15s; }
+        .rule-item:last-child { border-bottom: none; }
+        .rule-item:hover { background: #fafafa; }
+        .rule-emoji { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+        .rule-text { font-size: 15px; color: var(--text); }
+
+        /* Sauna */
+        .sauna-box { background: white; border-radius: var(--radius); padding: 22px 26px; box-shadow: var(--shadow); margin-top: 6px; border-left: 4px solid #e67e22; }
+        .sauna-box h4 { font-size: 15px; font-weight: 700; color: #c0392b; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+        .sauna-steps { list-style: none; padding: 0; }
+        .sauna-steps li { display: flex; align-items: flex-start; gap: 12px; padding: 9px 0; border-bottom: 1px solid #f5f5f5; font-size: 14.5px; color: var(--text-light); line-height: 1.6; }
+        .sauna-steps li:last-child { border-bottom: none; }
+        .snum { width: 24px; height: 24px; background: #e67e22; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+
+        /* Season header */
+        .season-header { display: flex; align-items: center; gap: 10px; margin: 24px 0 14px; font-size: 14px; font-weight: 700; color: var(--green-mid); text-transform: uppercase; letter-spacing: 0.7px; }
+        .season-header::before { content: ''; display: block; width: 3px; height: 18px; background: var(--green-light); border-radius: 2px; }
+
+        /* Cards */
+        .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+        .card { background: var(--card); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); border-top: 3px solid var(--green-light); transition: box-shadow 0.2s, transform 0.2s; }
+        .card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+        .card-icon { font-size: 28px; margin-bottom: 12px; display: block; }
+        .card h3 { font-size: 16px; font-weight: 700; color: var(--green-dark); margin-bottom: 8px; }
+        .card h3 a { color: var(--green-dark); text-decoration: none; }
+        .card h3 a:hover { color: var(--green-accent); text-decoration: underline; }
+        .card p, .card li { font-size: 14.5px; color: var(--text-light); line-height: 1.7; }
+        .card small { font-size: 13px; color: var(--text-muted); }
+        .card a { color: var(--green-accent); text-decoration: none; font-weight: 500; }
+        .card a:hover { text-decoration: underline; }
+        .card ul { list-style: none; padding: 0; }
+        .card ul li { padding: 3px 0 3px 18px; position: relative; }
+        .card ul li::before { content: '\2192'; position: absolute; left: 0; color: var(--green-light); font-weight: bold; }
+        .card .tag { display: inline-block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; background: var(--green-pale); color: var(--green-dark); padding: 3px 9px; border-radius: 20px; margin-bottom: 10px; }
+        .card-link { cursor: pointer; }
+        .card-link h3 span { transition: opacity 0.2s; }
+        .emg-card.green .emg-number { color: #27ae60; }
+        a.emg-card { text-decoration: none; color: inherit; display: flex; flex-direction: column; align-items: center; }
+        a.emg-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+
+        /* Wine cards */
+        .wine-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+        .wine-card { background: var(--card); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); border-top: 3px solid #C8A951; transition: box-shadow 0.2s, transform 0.2s; }
+        .wine-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+        .wine-card .wc-icon { font-size: 26px; margin-bottom: 10px; display: block; }
+        .wine-card .wc-producer { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; margin-bottom: 3px; }
+        .wine-card h3 { font-size: 15px; font-weight: 700; color: var(--green-dark); margin-bottom: 8px; }
+        .wine-card p { font-size: 14px; color: var(--text-light); line-height: 1.65; }
+        .wine-card .wc-price { display: inline-block; background: #C8A951; color: white; font-weight: 700; font-size: 14px; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; }
+        .wine-card .wc-eco { display: inline-block; font-size: 11px; font-weight: 600; background: var(--green-pale); color: var(--green-dark); padding: 3px 8px; border-radius: 20px; margin-left: 6px; margin-bottom: 8px; }
+        .wine-card .wc-note { font-size: 13px; color: var(--green-accent); font-style: italic; margin-top: 7px; }
+
+        /* Service cards */
+        .service-card { background: var(--card); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); border-top: 3px solid var(--green-accent); transition: box-shadow 0.2s, transform 0.2s; }
+        .service-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+        .service-card .card-icon { font-size: 28px; margin-bottom: 12px; display: block; }
+        .service-card h3 { font-size: 16px; font-weight: 700; color: var(--green-dark); margin-bottom: 8px; }
+        .service-card p { font-size: 14.5px; color: var(--text-light); line-height: 1.7; }
+        .service-card .on-request { display: inline-block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; background: var(--green-pale); color: var(--green-accent); padding: 3px 9px; border-radius: 20px; margin-bottom: 10px; }
+
+        /* Emergency */
+        .emergency-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; margin-bottom: 28px; }
+        .emg-card { background: white; border-radius: var(--radius); padding: 20px 16px; text-align: center; box-shadow: var(--shadow); }
+        .emg-card .emg-icon { font-size: 28px; margin-bottom: 8px; }
+        .emg-card .emg-number { font-size: 30px; font-weight: 800; letter-spacing: 1px; }
+        .emg-card .emg-desc { font-size: 13px; color: var(--text-light); margin-top: 4px; font-weight: 500; }
+        .emg-card.red .emg-number { color: #e74c3c; }
+        .emg-card.blue .emg-number { color: #2980b9; }
+        .emg-card.orange .emg-number { color: #e67e22; }
+        .emg-card.teal .emg-number { color: var(--green-accent); }
+
+        .contact-box { background: var(--green-pale); border-radius: var(--radius); padding: 24px 28px; display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; margin-top: 24px; }
+        .contact-icon { font-size: 40px; flex-shrink: 0; }
+        .contact-info h3 { font-size: 17px; font-weight: 700; color: var(--green-dark); margin-bottom: 8px; }
+        .contact-info p { font-size: 15px; color: var(--text-light); }
+        .contact-info a { color: var(--green-accent); font-weight: 600; text-decoration: none; }
+        .contact-info a:hover { text-decoration: underline; }
+
+        footer { background: var(--green-dark); color: rgba(255,255,255,0.6); text-align: center; padding: 40px 24px; font-size: 14px; line-height: 2; }
+        footer strong { color: rgba(255,255,255,0.9); }
+        footer a { color: var(--green-light); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 600px) {
+            .hero { padding: 56px 20px 76px; }
+            main { padding: 36px 16px 48px; }
+            nav a { padding: 7px 10px; font-size: 12px; }
+            h2 { font-size: 22px; }
+            .wifi-box { flex-direction: column; gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="lang-bar">
+    <span>&#127760;</span>
+    <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" id="btn-sl" onclick="setLang('sl')">SL</button>
+    <button class="lang-btn" id="btn-de" onclick="setLang('de')">DE</button>
+    <button class="lang-btn" id="btn-hr" onclick="setLang('hr')">HR</button>
+</div>
+
+<header class="hero">
+    <span class="hero-logo">&#127795;</span>
+    <h1 data-i18n="hero_title"></h1>
+    <p class="hero-subtitle" data-i18n="hero_subtitle"></p>
+</header>
+
+<nav>
+    <a href="#apartment" data-i18n="nav_apartment"></a>
+    <a href="#activities" data-i18n="nav_activities"></a>
+    <a href="#attractions" data-i18n="nav_attractions"></a>
+    <a href="#food" data-i18n="nav_food"></a>
+    <a href="#practical" data-i18n="nav_practical"></a>
+    <a href="#extras" data-i18n="nav_extras"></a>
+</nav>
+
+<main>
+
+    <!-- APARTMENT -->
+    <section id="apartment">
+        <div class="section-header">
+            <div class="section-icon">&#127968;</div>
+            <h2 data-i18n="apt_title"></h2>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-box">
+                <div class="i-icon">&#128273;</div>
+                <div class="i-label" data-i18n="checkin_label"></div>
+                <div class="i-value" data-i18n="checkin_value"></div>
+            </div>
+            <div class="info-box">
+                <div class="i-icon">&#129523;</div>
+                <div class="i-label" data-i18n="checkout_label"></div>
+                <div class="i-value" data-i18n="checkout_value"></div>
+            </div>
+            <div class="info-box">
+                <div class="i-icon">&#128663;</div>
+                <div class="i-label" data-i18n="parking_label"></div>
+                <div class="i-value" data-i18n="parking_value"></div>
+            </div>
+        </div>
+
+        <div class="parking-note" data-i18n="parking_note"></div>
+
+        <div class="wifi-box">
+            <div class="wifi-icon">&#128246;</div>
+            <div class="wifi-details">
+                <div class="wifi-row">
+                    <span class="wlabel" data-i18n="wifi_network_label"></span>
+                    <span class="wvalue">HI&#352;A POD LIPO</span>
+                </div>
+                <div class="wifi-row">
+                    <span class="wlabel" data-i18n="wifi_password_label"></span>
+                    <span class="wvalue">Lipa2025</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="sub-header">
+            <div class="sub-icon">&#128203;</div>
+            <h3 data-i18n="rules_title"></h3>
+        </div>
+        <div class="rules-list">
+            <div class="rule-item"><span class="rule-emoji">&#128683;</span><span class="rule-text" data-i18n="rule_1"></span></div>
+            <div class="rule-item"><span class="rule-emoji">&#128062;</span><span class="rule-text" data-i18n="rule_3"></span></div>
+            <div class="rule-item"><span class="rule-emoji">&#9851;&#65039;</span><span class="rule-text" data-i18n="rule_4"></span></div>
+            <div class="rule-item"><span class="rule-emoji">&#9888;&#65039;</span><span class="rule-text" data-i18n="rule_5"></span></div>
+            <div class="rule-item"><span class="rule-emoji">&#129529;</span><span class="rule-text" data-i18n="rule_6"></span></div>
+        </div>
+
+        <div class="sub-header" style="margin-top:28px;">
+            <div class="sub-icon">&#9832;</div>
+            <h3 data-i18n="sauna_title"></h3>
+        </div>
+        <div class="sauna-box">
+            <h4>&#128293; <span data-i18n="sauna_heading"></span></h4>
+            <ul class="sauna-steps">
+                <li><div class="snum">1</div><span data-i18n="sauna_s1"></span></li>
+                <li><div class="snum">2</div><span data-i18n="sauna_s2"></span></li>
+                <li><div class="snum">3</div><span data-i18n="sauna_s3"></span></li>
+                <li><div class="snum">4</div><span data-i18n="sauna_s4"></span></li>
+                <li><div class="snum">&#128161;</div><span data-i18n="sauna_tip"></span></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ACTIVITIES -->
+    <section id="activities">
+        <div class="section-header">
+            <div class="section-icon">&#127939;</div>
+            <h2 data-i18n="activities_title"></h2>
+        </div>
+        <div class="season-header" data-i18n="season_summer"></div>
+        <div class="cards" id="activities-summer-cards"></div>
+        <div class="season-header" style="margin-top:28px;" data-i18n="season_winter"></div>
+        <div class="cards" id="activities-winter-cards"></div>
+        <div class="season-header" style="margin-top:28px;" data-i18n="season_year"></div>
+        <div class="cards" id="activities-year-cards"></div>
+    </section>
+
+    <!-- ATTRACTIONS -->
+    <section id="attractions">
+        <div class="section-header">
+            <div class="section-icon">&#127807;</div>
+            <h2 data-i18n="attr_title"></h2>
+        </div>
+        <div class="cards" id="attractions-cards"></div>
+    </section>
+
+    <!-- FOOD -->
+    <section id="food">
+        <div class="section-header">
+            <div class="section-icon">&#127869;&#65039;</div>
+            <h2 data-i18n="food_title"></h2>
+        </div>
+        <div class="cards" id="food-cards"></div>
+    </section>
+
+    <!-- PRACTICAL -->
+    <section id="practical">
+        <div class="section-header">
+            <div class="section-icon">&#8505;&#65039;</div>
+            <h2 data-i18n="practical_title"></h2>
+        </div>
+
+        <div class="sub-header" style="margin-top:0;">
+            <div class="sub-icon">&#128680;</div>
+            <h3 data-i18n="emergency_title"></h3>
+        </div>
+        <div class="emergency-grid">
+            <div class="emg-card red"><div class="emg-icon">&#128680;</div><div class="emg-number">112</div><div class="emg-desc" data-i18n="emg_general"></div></div>
+            <div class="emg-card blue"><div class="emg-icon">&#128660;</div><div class="emg-number">113</div><div class="emg-desc" data-i18n="emg_police"></div></div>
+            <div class="emg-card orange"><div class="emg-icon">&#128658;</div><div class="emg-number">112</div><div class="emg-desc" data-i18n="emg_fire"></div></div>
+            <div class="emg-card teal"><div class="emg-icon">&#127973;</div><div class="emg-number">112</div><div class="emg-desc" data-i18n="emg_ambulance"></div></div>
+            <a class="emg-card green" href="https://www.google.com/maps/search/?api=1&query=veterinarska+ambulanta+Slovenska+Bistrica" target="_blank" rel="noopener" style="box-shadow:var(--shadow);border-radius:var(--radius);padding:20px 16px;text-align:center;background:white;transition:box-shadow 0.2s,transform 0.2s;text-decoration:none;"><div class="emg-icon">&#128021;</div><div class="emg-number" style="font-size:22px;color:#27ae60;">Vet ↗</div><div class="emg-desc" data-i18n="emg_vet"></div></a>
+        </div>
+
+        <div class="cards" id="practical-cards"></div>
+
+        <div class="contact-box">
+            <div class="contact-icon">&#128075;</div>
+            <div class="contact-info">
+                <h3 data-i18n="host_title"></h3>
+                <p data-i18n="host_desc"></p>
+                <p style="margin-top:10px;">
+                    &#128241; <a href="tel:+38640880989"><strong>040 880 989</strong></a>
+                </p>
+                <p style="margin-top:6px;font-size:14px;color:var(--text-light);">
+                    <span data-i18n="host_no_answer"></span>&#160;<a href="tel:+38641291225">041 291 225</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXTRAS -->
+    <section id="extras">
+        <div class="section-header">
+            <div class="section-icon">&#10024;</div>
+            <h2 data-i18n="extras_title"></h2>
+        </div>
+
+        <div class="sub-header" style="margin-top:0;">
+            <div class="sub-icon">&#127863;</div>
+            <h3 data-i18n="extras_drinks_title"></h3>
+        </div>
+        <div class="wine-grid" id="wine-cards"></div>
+
+        <div class="sub-header">
+            <div class="sub-icon">&#127807;</div>
+            <h3 data-i18n="extras_services_title"></h3>
+        </div>
+        <div class="cards" id="services-cards"></div>
+    </section>
+
+</main>
+
+<footer>
+    <div style="margin-bottom:10px;font-size:32px;">&#127795;</div>
+    <strong>Hi&#353;a pod lipo &mdash; Apartma Lipa</strong>
+    <br>
+    <span data-i18n="footer_text"></span>
+</footer>
+
+<script>
+var T = {
+    en: {
+        hero_title: "Welcome to Hiša pod lipo",
+        hero_subtitle: "Apartma Lipa · Nova Gora nad Slovensko Bistrico · Your home in the hills of Styria",
+        nav_apartment: "🏠 Apartment", nav_activities: "🏃 Activities",
+        nav_attractions: "🌿 Attractions", nav_food: "🍽️ Food & Drink",
+        nav_practical: "ℹ️ Practical", nav_extras: "✨ Extras",
+        apt_title: "Apartment Lipa",
+        checkin_label: "Check-in", checkin_value: "from 16:00",
+        checkout_label: "Check-out", checkout_value: "by 11:00",
+        parking_label: "Parking", parking_value: "Garage",
+        parking_note: "🚗 Parking tip: we recommend turning your car at the crossroads just below the house, driving up the hill, and reversing into the garage. The road is steep and slightly narrower than usual — reversing in makes it much easier.",
+        wifi_network_label: "Network", wifi_password_label: "Password",
+        rules_title: "House Rules",
+        rule_1: "No smoking inside the apartment",
+        rule_2: "Quiet hours: 22:00 – 08:00",
+        rule_3: "Pets are welcome",
+        rule_4: "Please sort waste into the designated bins",
+        rule_5: "Report any damage immediately",
+        rule_6: "Please tidy up the apartment before you leave",
+        sauna_title: "Sauna",
+        sauna_heading: "How to start the sauna",
+        sauna_s1: "Left button: turn to set the time — all the way to max.",
+        sauna_s2: "Right side has two dials. Use the one numbered 1–4 with black numbers on a white background. Turn it to 4.",
+        sauna_s3: "After about 1 minute you will feel warmth radiating from the stones.",
+        sauna_s4: "During your session, pour a little water over the stones for steam.",
+        sauna_tip: "Best effect: switch on at least 1 hour before you use it.",
+        activities_title: "Activities",
+        season_summer: "☀️ Summer",
+        season_winter: "❄️ Winter",
+        season_year: "🔁 Year-round",
+        activities_summer: [
+            { icon:"🏊", title:"Pool Slovenska Bistrica", url:"https://www.google.com/maps/search/?api=1&query=Bazen+Slovenska+Bistrica", text:"Public outdoor pool — perfect for a hot summer day. Sunbathing lawn and a children's pool. Full day: €5.<br><small>Partizanska 35 · <a href='https://www.zavod-sport-sb.si' target='_blank'>zavod-sport-sb.si</a></small>" },
+            { icon:"🌿", title:"Pot med krošnjami — Rogla", url:"https://www.google.com/maps/search/?api=1&query=Pot+med+kro%C5%A1njami+Pohorje", text:"900 m treetop walk through the Pohorje forest up to 30 m above the ground. On the Rogla plateau (1,517 m). Suitable for all ages — combine with the gondola ride.<br><small><a href='https://www.rogla.eu' target='_blank'>rogla.eu</a></small>" },
+            { icon:"⛰️", title:"Bistriški Vintgar", url:"https://www.google.com/maps/search/?api=1&query=Bistri%C5%A1ki+Vintgar", text:"A stunning 4 km gorge carved by the Bistrica stream — free entry. The 13 m Šum waterfall, a Roman quarry and 4th-century fortress ruins. Easy flat forest path, ~1.5 hrs one way." },
+            { icon:"🏔️", title:"Mariborsko Pohorje — Summer", url:"https://www.google.com/maps/search/?api=1&query=Mariborsko+Pohorje", text:"Take the gondola from Maribor to 1,347 m for panoramic views, mountain biking, hiking and the famous Bike Park. Paragliding and a summer toboggan also available.<br><small><a href='https://www.mariborsko-pohorje.si' target='_blank'>mariborsko-pohorje.si</a></small>" }
+        ],
+        activities_winter: [
+            { icon:"⛷️", title:"Ski Resort Jakec — Trije Kralji", url:"https://www.google.com/maps/search/?api=1&query=Hotel+Jakec+Trije+Kralji", text:"4 ski slopes between 1,200 and 1,347 m. Adult day pass from €21.50. Ski school, equipment rental and a restaurant on site. Perfect for families and beginners.<br><small><a href='https://www.jakec.si' target='_blank'>jakec.si</a></small>" },
+            { icon:"🎿", title:"Ski Resort Rogla", url:"https://www.google.com/maps/search/?api=1&query=Rogla+Pohorje", text:"Slovenia's most snow-reliable ski resort at 1,517 m. 16 km of groomed pistes, cross-country trails and snowshoeing — consistently the best snow conditions in the region.<br><small><a href='https://www.rogla.eu' target='_blank'>rogla.eu</a></small>" },
+            { icon:"🏔️", title:"Mariborsko Pohorje — Skiing", url:"https://www.google.com/maps/search/?api=1&query=Mariborsko+Pohorje", text:"The largest ski resort in Slovenia — 40 km of slopes, modern lifts. Home of the Golden Fox World Cup slalom. Just 30 min from Slovenska Bistrica.<br><small><a href='https://www.mariborsko-pohorje.si' target='_blank'>mariborsko-pohorje.si</a></small>" }
+        ],
+        activities_year: [
+            { icon:"🧗", title:"Climbing Centre SB", url:"https://www.google.com/maps/search/?api=1&query=Plezalni+center+Slovenska+Bistrica", text:"3,200 m² of climbing surfaces, walls up to 17 m, 170+ routes, bouldering zone and a gym. For all levels. Bar inside.<br><small>Slovenska Bistrica · <a href='https://www.pcsb.si' target='_blank'>pcsb.si</a></small>" },
+            { icon:"🖤", title:"Črno jezero", url:"https://www.google.com/maps/search/?api=1&query=%C4%8Crno+jezero+Pohorje", text:"A mysterious dark mountain lake at 1,200 m on Pohorje. The colour comes from natural organic sediment; the water is crystal clear. 20 min walk from Dom na Osankarici — a local gem." }
+        ],
+        attr_title: "Local Attractions",
+        attractions: [
+            { icon:"⛰️", title:"Bistriški Vintgar", url:"https://www.google.com/maps/search/?api=1&query=Bistri%C5%A1ki+Vintgar", text:"A stunning 4 km gorge carved by the Bistrica stream — free entry. The 13 m Šum waterfall, a Roman quarry and 4th-century fortress ruins. Easy flat forest path, approx. 1.5 hrs one way." },
+            { icon:"🏰", title:"Grad Slovenska Bistrica", url:"https://www.google.com/maps/search/?api=1&query=Grad+Slovenska+Bistrica", text:"13th-century Renaissance-baroque castle in the town centre, housing 15 museum collections, a castle wine cellar and historic kitchen.<br><small>Tue–Fri 9:00–17:00, Sat 11:00–15:00 (Apr–Oct) · <a href='https://www.grad-slovenska-bistrica.si' target='_blank'>grad-slovenska-bistrica.si</a></small>" },
+            { icon:"🏨", title:"Hotel Jakec — Trije Kralji", url:"https://www.google.com/maps/search/?api=1&query=Hotel+Jakec+Trije+Kralji", text:"Mountain hotel and ski resort on Pohorje, 1,200–1,347 m. Great views, restaurant open to non-guests and a welcoming atmosphere year-round." },
+            { icon:"🍷", title:"Vina Martinus", url:"https://www.google.com/maps/search/?api=1&query=Vina+Martinus+Ritoznoj", text:"Organic-certified estate winery on Pohorje slopes. Tastings and cellar visits by appointment. All wines biodynamically produced — no synthetic pesticides or fertilisers.<br><small>Ritoznoj · <a href='https://martinus.si' target='_blank'>martinus.si</a></small>" },
+            { icon:"⛪", title:"Jernejeva pot", url:"https://www.google.com/maps/search/?api=1&query=Jernejeva+pot+Slovenska+Bistrica", text:"A 12 km marked pilgrimage trail connecting 5 historic churches around Slovenska Bistrica — perfect for a half-day walk with beautiful countryside views." },
+            { icon:"🖤", title:"Črno jezero", url:"https://www.google.com/maps/search/?api=1&query=%C4%8Crno+jezero+Pohorje", text:"A dark mountain lake nestled at 1,200 m on Pohorje. The colour comes from natural organic sediment; the water is perfectly clear. 20 min walk from Dom na Osankarici. A local secret worth the detour." }
+        ],
+        food_title: "Food & Drink",
+        food: [
+            { icon:"🍕", title:"Picerija Gams", tag:"Pizza · Great for families", url:"https://www.google.com/maps/search/?api=1&query=Picerija+Gams+Zgornja+Bistrica", text:"Popular pizzeria with a wood-fired oven. 30+ varieties of pizza, family-friendly atmosphere and fast service surrounded by nature.<br><small>Zgornja Bistrica 25 · Sun–Thu 9–22, Fri–Sat 9–23 · <a href='tel:+38602843099' onclick='event.stopPropagation()'>02 843 09 99</a></small>" },
+            { icon:"🍕", title:"Picerija Puj Sem", tag:"Pizza", url:"https://www.google.com/maps/search/?api=1&query=Picerija+Puj+Sem+Slovenska+Bistrica", text:"Neapolitan pizza from a stone oven. Rated 4.7/5 — quality ingredients, fast and delicious.<br><small>Ljubljanska cesta 39 · <a href='tel:+38664237919' onclick='event.stopPropagation()'>064 237 919</a></small>" },
+            { icon:"🍔", title:"Restavracija Plac", tag:"Restaurant", url:"https://www.google.com/maps/search/?api=1&query=Restavracija+Plac+Slovenska+Bistrica", text:"#1 on TripAdvisor in Slovenska Bistrica. Famous for the best burgers in Styria — also steaks, pasta &amp; salads.<br><small>Kajuhova 60a · Mon–Fri 11–21:30, Sat 12–21:30, Sun 12–17:30 · <a href='tel:+38631503654' onclick='event.stopPropagation()'>031 503 654</a></small>" },
+            { icon:"🍲", title:"Gostilna pri Martinu", tag:"Gostilna", url:"https://www.google.com/maps/search/?api=1&query=Gostilna+pri+Martinu+Slovenska+Bistrica", text:"Cosy traditional inn serving authentic Slovenian dishes and daily lunch menus.<br><small>Kolodvorska 25 · <a href='tel:+38628182018' onclick='event.stopPropagation()'>02 818 20 18</a></small>" },
+            { icon:"🧀", title:"Local Market", tag:"Market · Saturday morning", url:"https://www.google.com/maps/search/?api=1&query=Grad+Slovenska+Bistrica", text:"Every Saturday morning in the courtyard of Grad Slovenska Bistrica. Fresh local produce, honey, artisan cheeses and seasonal specialities." },
+            { icon:"🛒", title:"Supermarkets", tag:"Shop", text:"Nearest: <a href='https://www.google.com/maps/search/?api=1&query=%C5%A0PAR+Slovenska+Bistrica' target='_blank'>ŠPAR</a>. Also: <a href='https://www.google.com/maps/search/?api=1&query=Merkator+Slovenska+Bistrica' target='_blank'>Merkator</a>, <a href='https://www.google.com/maps/search/?api=1&query=Lidl+Slovenska+Bistrica' target='_blank'>Lidl</a>, <a href='https://www.google.com/maps/search/?api=1&query=Hofer+Slovenska+Bistrica' target='_blank'>Hofer</a>. (~5 km, open daily)" }
+        ],
+        practical_title: "Practical Information",
+        emergency_title: "Emergency Numbers",
+        emg_general: "Emergency", emg_police: "Police",
+        emg_fire: "Fire dept.", emg_ambulance: "Ambulance",
+        host_title: "Your Host",
+        host_desc: "We are available for any questions or needs.",
+        host_no_answer: "If no answer, please call:",
+        emg_vet: "Vet emergency",
+        footer_text: "We hope you have a wonderful stay!",
+        practical: [
+            { icon:"🚗", title:"Getting Around", text:"Nova Gora is ~5 km from Slovenska Bistrica centre. A car is recommended.<br>Maribor: 30 min · Ljubljana: ~1 hr · Car rental available in Maribor or Slovenska Bistrica." },
+            { icon:"📱", title:"Useful Apps", list:["Google Maps / Waze — navigation","Meteo.si — Slovenian weather forecast","Bolt — ride-hailing from Maribor"] },
+            { icon:"🗺️", title:"Tourist Info (TIC)", url:"https://tic-sb.si", text:"For maps, tips and local events visit the Tourist Information Centre.<br><small>Trg svobode 17, Slovenska Bistrica · <a href='tel:+38628430810' onclick='event.stopPropagation()'>02 843 08 10</a> · tic-sb.si</small>" },
+            { icon:"🐾", title:"Veterinary Emergency", url:"https://www.google.com/maps/search/?api=1&query=veterinarska+ambulanta+Slovenska+Bistrica", text:"24h vet emergency for the Slovenska Bistrica region. Click to find the nearest vet on Google Maps.<br><small>Vet clinic Maribor (24h): <a href='tel:+38623335100' onclick='event.stopPropagation()'>02 333 51 00</a></small>" },
+            { icon:"🌐", title:"Language Tips", text:"Official language: Slovenian. English widely spoken in tourist areas.<br>Hello = <em>Zdravo</em> · Thank you = <em>Hvala</em> · Please = <em>Prosim</em> · Cheers! = <em>Na zdravje!</em>" }
+        ],
+        extras_title: "Extras & Add-ons",
+        extras_drinks_title: "Mini Bar — Local Wines & Drinks",
+        extras_services_title: "On-Request Services",
+        wines: [
+            { icon:"🍷", producer:"Vinogradništvo Repnik · Ritoznoj", name:"Ritoznojčan PTP", price:"6 €", eco:false, text:"Pleasantly light with refreshing fruity balance — the character of Ritoznoj in a glass. Protected Traditional Origin designation.", note:"Local tradition: serve 1:1 with Radenska mineral water and ice." },
+            { icon:"🍷", producer:"Vinogradništvo Repnik · Ritoznoj", name:"Kerner", price:"8 €", eco:false, text:"Aromatic variety with delicate floral notes and juicy fruit flavour. Elegant and gently sweet — ideal for those who prefer a softer white wine." },
+            { icon:"🍷", producer:"Vina Martinus · Ritoznoj", name:"Renski Rizling", price:"10 €", eco:true, text:"Aromas of dried fruit and gentle spice, vibrant and full-bodied. One of the world's most prestigious white varieties, at home on Styrian hillsides.", note:"Local tradition: serve 1:1 with Radenska mineral water and ice." },
+            { icon:"🍷", producer:"Vina Martinus · Ritoznoj", name:"Rumeni Muškat", price:"12 €", eco:true, text:"Intense aromatics, floral notes and the unmistakable scent of muscat. Sweet, gentle and full of summer character — enjoy it on its own." },
+            { icon:"🧡", producer:"Vina Martinus · Ritoznoj", name:"Orange Wine", price:"25 €", eco:true, text:"Not rosé, not white. White grapes macerated on the skins for a full lunar cycle — amber coloured, full-flavoured, with a character ordinary whites simply don't have. Biodynamic production: no additives in the cellar, every bottle unique.", note:"Perfect with food: cheese, game or roasted vegetables." },
+            { icon:"🥃", producer:"Vina Martinus · Ritoznoj", name:"Vinjak Pečovnik", price:"55 €", eco:false, text:"House brandy from the Pečovnik cellar. A true local spirit, crafted with the same care as the estate's wines." },
+            { icon:"🥂", producer:"Jeruzalem Ormož · Prlekija", name:"Muškatna Penina", price:"20 €", eco:false, text:"Golden sparkling wine with fine bubbles and a clear muscat bouquet. Notes of grape, pear and pineapple — light, lively, refreshing. Perfect to start the evening." },
+            { icon:"💧", producer:"", name:"Radenska Mineral Water", price:"2 €", eco:false, text:"Still mineral water. Recommended alongside Ritoznojčan PTP and Renski Rizling — 1:1 ratio with ice, just as the locals drink it." }
+        ],
+        services: [
+            { icon:"🌲", tag:"Na voljo po dogovoru", title:"Forest Therapy", text:"A guided mindfulness experience in the Pohorje forest with a licensed Slovenian forest therapist. Slow down, breathe and reconnect with nature." },
+            { icon:"💆", tag:"Na voljo po dogovoru", title:"Head Massage", text:"A relaxing head and scalp massage. Perfect after a day of hiking or skiing. Book in advance." },
+            { icon:"🤲", tag:"Na voljo po dogovoru", title:"Fascial Massage", text:"Deep-tissue fascial massage technique targeting muscle tension and aiding recovery. Especially recommended after physical activity." },
+            { icon:"🌳", tag:"Na voljo po dogovoru", title:"Forest Experience", text:"A guided sensory nature walk in the Pohorje forest — a slower, mindful way to explore the landscape around the house." },
+            { icon:"🧺", tag:"Na voljo po dogovoru", title:"Breakfast Basket", text:"A basket of local products delivered to your door: fresh bread, dairy, honey and seasonal fruit. Order the evening before." }
+        ]
+    },
+
+    sl: {
+        hero_title: "Dobrodošli v Hišo pod lipo",
+        hero_subtitle: "Apartma Lipa · Nova Gora nad Slovensko Bistrico · Vaš dom v hribih Štajerske",
+        nav_apartment: "🏠 Apartma", nav_activities: "🏃 Aktivnosti",
+        nav_attractions: "🌿 Znamenitosti", nav_food: "🍽️ Hrana in pijača",
+        nav_practical: "ℹ️ Praktično", nav_extras: "✨ Dodatna ponudba",
+        apt_title: "Apartma Lipa",
+        checkin_label: "Prijava", checkin_value: "od 16:00",
+        checkout_label: "Odjava", checkout_value: "do 11:00",
+        parking_label: "Parkiranje", parking_value: "Garaža",
+        parking_note: "🚗 Nasvet za parkiranje: priporočamo, da se na križišču pod hišo obrnete, zapeljete po hribu navzgor in vzvratno parkirate v garažo. Vzpon je namreč strm in nekoliko ožji kot je kdo navajen — vzvratno parkiranje je precej lažje.",
+        wifi_network_label: "Omrežje", wifi_password_label: "Geslo",
+        rules_title: "Hišni red",
+        rule_1: "V apartmaju ni dovoljeno kaditi",
+        rule_2: "Čas tišine: 22:00 – 08:00",
+        rule_3: "Hišni ljubljenčki so dobrodošli",
+        rule_4: "Prosimo, ločujte odpadke v označene posode",
+        rule_5: "Vsako škodo takoj sporočite",
+        rule_6: "Prosimo, pospravite apartma pred odhodom",
+        sauna_title: "Savna",
+        sauna_heading: "Kako prižgati savno",
+        sauna_s1: "Levi gumb: zavrtite in nastavite čas — vse do max.",
+        sauna_s2: "Na desni strani sta dve številčnici. Prava je tista od 1 do 4 s črnimi številkami na beli podlagi — zavrtite jo na 4.",
+        sauna_s3: "Po približno 1 minuti boste občutili toploto iz kamnov.",
+        sauna_s4: "Med savnanjem polijte malo vode po kamnih za paro.",
+        sauna_tip: "Najboljši učinek: savno prižgite vsaj 1 uro pred uporabo.",
+        activities_title: "Aktivnosti",
+        season_summer: "☀️ Poletje",
+        season_winter: "❄️ Zima",
+        season_year: "🔁 Celo leto",
+        activities_summer: [
+            { icon:"🏊", title:"Bazen Slovenska Bistrica", url:"https://www.google.com/maps/search/?api=1&query=Bazen+Slovenska+Bistrica", text:"Javni zunanji bazen — idealen za vroče poletne dni. Travniki za sončenje in otroški bazen. Cel dan: 5 €.<br><small>Partizanska 35 · <a href='https://www.zavod-sport-sb.si' target='_blank'>zavod-sport-sb.si</a></small>" },
+            { icon:"🌿", title:"Pot med krošnjami — Rogla", url:"https://www.google.com/maps/search/?api=1&query=Pot+med+kro%C5%A1njami+Pohorje", text:"900 m dolga pot med drevesnimi krošnjami do 30 m nad tlemi v pohorskem gozdu. Na planoti Rogla (1.517 m). Primerno za vse starosti — kombinirajte z vožnjo z gondolo.<br><small><a href='https://www.rogla.eu' target='_blank'>rogla.eu</a></small>" },
+            { icon:"⛰️", title:"Bistriški Vintgar", url:"https://www.google.com/maps/search/?api=1&query=Bistri%C5%A1ki+Vintgar", text:"Čudovita 4 km dolga soteska potoka Bistrice — vstop brezplačen. Slap Šum (13 m), rimski kamnolom in ostanki trdnjave iz 4. st. Lahkotna gozdna pot, ~1,5 h v eno smer." },
+            { icon:"🏔️", title:"Mariborsko Pohorje — Poletje", url:"https://www.google.com/maps/search/?api=1&query=Mariborsko+Pohorje", text:"Z gondolo iz Maribora na 1.347 m za panoramske razglede, gorsko kolesarjenje, pohodništvo in Bike Park. Na voljo tudi paraglajding in poletni tobogan.<br><small><a href='https://www.mariborsko-pohorje.si' target='_blank'>mariborsko-pohorje.si</a></small>" }
+        ],
+        activities_winter: [
+            { icon:"⛷️", title:"Smučišče Jakec — Trije Kralji", url:"https://www.google.com/maps/search/?api=1&query=Hotel+Jakec+Trije+Kralji", text:"4 proge med 1.200 in 1.347 m n.v. Dnevna karta za odrasle od 21,50 €. Smučarska šola, najem opreme in restavracija na licu mesta. Odlično za družine in začetnike.<br><small><a href='https://www.jakec.si' target='_blank'>jakec.si</a></small>" },
+            { icon:"🎿", title:"Smučišče Rogla", url:"https://www.google.com/maps/search/?api=1&query=Rogla+Pohorje", text:"Najbolj zanesljivo smučišče v Sloveniji na 1.517 m. 16 km urejenih prog, tek na smučeh in krpljanje — najboljše snežne razmere v regiji skozi vso zimo.<br><small><a href='https://www.rogla.eu' target='_blank'>rogla.eu</a></small>" },
+            { icon:"🏔️", title:"Mariborsko Pohorje — Smučanje", url:"https://www.google.com/maps/search/?api=1&query=Mariborsko+Pohorje", text:"Največje smučišče v Sloveniji — 40 km prog, moderni žičniški sistem. Prizorišče tekem Zlata lisica. Le 30 minut od Sl. Bistrice.<br><small><a href='https://www.mariborsko-pohorje.si' target='_blank'>mariborsko-pohorje.si</a></small>" }
+        ],
+        activities_year: [
+            { icon:"🧗", title:"Plezalni center SB", url:"https://www.google.com/maps/search/?api=1&query=Plezalni+center+Slovenska+Bistrica", text:"3.200 m² plezalnih površin, stene do 17 m, 170+ smeri, balvanska cona in fitnes. Za vse ravni. Znotraj je bar.<br><small>Slovenska Bistrica · <a href='https://www.pcsb.si' target='_blank'>pcsb.si</a></small>" },
+            { icon:"🖤", title:"Črno jezero", url:"https://www.google.com/maps/search/?api=1&query=%C4%8Crno+jezero+Pohorje", text:"Skrivnostno gorsko jezerce na 1.200 m na Pohorju. Temna barva izhaja iz organskih sedimentov, voda pa je bistra kot kristal. 20 minut hoje od Doma na Osankarici — lokalni dragulj." }
+        ],
+        attr_title: "Lokalne znamenitosti",
+        attractions: [
+            { icon:"⛰️", title:"Bistriški Vintgar", url:"https://www.google.com/maps/search/?api=1&query=Bistri%C5%A1ki+Vintgar", text:"Čudovita 4 km dolga soteska potoka Bistrice — vstop brezplačen. Slap Šum (13 m), rimski kamnolom in ostanki trdnjave iz 4. st. Lahkotna gozdna pot, ~1,5 h v eno smer." },
+            { icon:"🏰", title:"Grad Slovenska Bistrica", url:"https://www.google.com/maps/search/?api=1&query=Grad+Slovenska+Bistrica", text:"Renesančno-baročni grad iz 13. st. v centru mesta s 15 muzejskimi zbirkami, vinsko kletjo in grajsko kuhinjo.<br><small>Tor–pet 9:00–17:00, sob 11:00–15:00 (apr–okt) · <a href='https://www.grad-slovenska-bistrica.si' target='_blank'>grad-slovenska-bistrica.si</a></small>" },
+            { icon:"🏨", title:"Hotel Jakec — Trije Kralji", url:"https://www.google.com/maps/search/?api=1&query=Hotel+Jakec+Trije+Kralji", text:"Gorski hotel in smučišče na Pohorju, 1.200–1.347 m. Odlični razgledi, restavracija odprta za vse obiskovalce in prijetna atmosfera vse leto." },
+            { icon:"🍷", title:"Vina Martinus", url:"https://www.google.com/maps/search/?api=1&query=Vina+Martinus+Ritoznoj", text:"Ekološko certificirana vinarija na pobočjih Pohorja. Pokušnje in obisk kleti po dogovoru. Vsa vina biodinamično pridelana — brez sintetičnih pesticidov in gnojil.<br><small>Ritoznoj · <a href='https://martinus.si' target='_blank'>martinus.si</a></small>" },
+            { icon:"⛪", title:"Jernejeva pot", url:"https://www.google.com/maps/search/?api=1&query=Jernejeva+pot+Slovenska+Bistrica", text:"12 km dolga označena pot, ki povezuje 5 zgodovinskih cerkva okoli Sl. Bistrice — odlično za pol dne hoje s čudovitimi pogledi na podeželje." },
+            { icon:"🖤", title:"Črno jezero", url:"https://www.google.com/maps/search/?api=1&query=%C4%8Crno+jezero+Pohorje", text:"Skrivnostno gorsko jezerce na 1.200 m med Osankarico in Velikim vrhom. Temna barva iz organskih sedimentov, voda pa bistra kot kristal. 20 minut hoje od Doma na Osankarici. Vredno obiska." }
+        ],
+        food_title: "Hrana in pijača",
+        food: [
+            { icon:"🍕", title:"Picerija Gams", tag:"Pizzerija · Odlično za družine", url:"https://www.google.com/maps/search/?api=1&query=Picerija+Gams+Zgornja+Bistrica", text:"Priljubljena pizzerija z leseno krušno pečjo. 30+ vrst pic, prijazen prostor za celotno družino in hitra postrežba.<br><small>Zgornja Bistrica 25 · ned–čet 9–22, pet–sob 9–23 · <a href='tel:+38602843099' onclick='event.stopPropagation()'>02 843 09 99</a></small>" },
+            { icon:"🍕", title:"Picerija Puj Sem", tag:"Pizzerija", url:"https://www.google.com/maps/search/?api=1&query=Picerija+Puj+Sem+Slovenska+Bistrica", text:"Neapeljska pizza iz kamene peči. Ocenjena 4,7/5 — kakovostne sestavine, hitro in odlično.<br><small>Ljubljanska cesta 39 · <a href='tel:+38664237919' onclick='event.stopPropagation()'>064 237 919</a></small>" },
+            { icon:"🍔", title:"Restavracija Plac", tag:"Restavracija", url:"https://www.google.com/maps/search/?api=1&query=Restavracija+Plac+Slovenska+Bistrica", text:"#1 na TripAdvisorju v Sl. Bistrici. Znana po najboljših burgerjih v Štajerski — prav tako steaki, testenine in solate.<br><small>Kajuhova 60a · pon–pet 11–21:30, sob 12–21:30, ned 12–17:30 · <a href='tel:+38631503654' onclick='event.stopPropagation()'>031 503 654</a></small>" },
+            { icon:"🍲", title:"Gostilna pri Martinu", tag:"Gostilna", url:"https://www.google.com/maps/search/?api=1&query=Gostilna+pri+Martinu+Slovenska+Bistrica", text:"Prijetna gostilna s tradicionalno slovensko hrano in dnevnim kosilom.<br><small>Kolodvorska 25 · <a href='tel:+38628182018' onclick='event.stopPropagation()'>02 818 20 18</a></small>" },
+            { icon:"🧀", title:"Tržnica", tag:"Tržnica · Vsako soboto zjutraj", url:"https://www.google.com/maps/search/?api=1&query=Grad+Slovenska+Bistrica", text:"Na grajskem dvorišču gradu Slovenska Bistrica vsako soboto zjutraj. Sveže lokalne pridelke, med, domači sir in sezonske posebnosti." },
+            { icon:"🛒", title:"Supermarketi", tag:"Trgovina", text:"Najbližji je <a href='https://www.google.com/maps/search/?api=1&query=%C5%A0PAR+Slovenska+Bistrica' target='_blank'>ŠPAR</a>. V mestu so še <a href='https://www.google.com/maps/search/?api=1&query=Merkator+Slovenska+Bistrica' target='_blank'>Merkator</a>, <a href='https://www.google.com/maps/search/?api=1&query=Lidl+Slovenska+Bistrica' target='_blank'>Lidl</a> in <a href='https://www.google.com/maps/search/?api=1&query=Hofer+Slovenska+Bistrica' target='_blank'>Hofer</a>. (~5 km, odprto vsak dan)" }
+        ],
+        practical_title: "Praktične informacije",
+        emergency_title: "Številke za nujne primere",
+        emg_general: "Nujna pomoč", emg_police: "Policija",
+        emg_fire: "Gasilci", emg_ambulance: "Reševalci",
+        host_title: "Vaš gostitelj",
+        host_desc: "Na voljo smo za vsa vprašanja.",
+        host_no_answer: "Če se ne javim, pokličite:",
+        emg_vet: "Veterinar nujno",
+        footer_text: "Upamo, da boste imeli čudovit bivanje!",
+        practical: [
+            { icon:"🚗", title:"Prevoz", text:"Nova Gora je ~5 km od centra Sl. Bistrice. Priporočamo avto.<br>Maribor: 30 min · Ljubljana: ~1 uro · Najem avtomobilov: Maribor ali Sl. Bistrica." },
+            { icon:"📱", title:"Koristne aplikacije", list:["Google Maps / Waze — navigacija","Meteo.si — slovenska vremenska napoved","Bolt — taksi iz Maribora"] },
+            { icon:"🗺️", title:"Turistični informacijski center", url:"https://tic-sb.si", text:"Za zemljevide, nasvete in informacije o prireditvah obiščite TIC.<br><small>Trg svobode 17, Sl. Bistrica · <a href='tel:+38628430810' onclick='event.stopPropagation()'>02 843 08 10</a> · tic-sb.si</small>" },
+            { icon:"🐾", title:"Veterinarska nujna pomoč", url:"https://www.google.com/maps/search/?api=1&query=veterinarska+ambulanta+Slovenska+Bistrica", text:"Veterinarska nujna pomoč za območje Sl. Bistrice. Kliknite za iskanje najbližje ambulante na Google Maps.<br><small>Veterinarska poliklinika Maribor (24h): <a href='tel:+38623335100' onclick='event.stopPropagation()'>02 333 51 00</a></small>" },
+            { icon:"🌐", title:"Koristne fraze", text:"Uradni jezik: slovenščina.<br>Zdravo · Hvala · Prosim · Na zdravje! 🥂" }
+        ],
+        extras_title: "Dodatna ponudba",
+        extras_drinks_title: "Mini Bar — Lokalna vina in pijače",
+        extras_services_title: "Storitve po dogovoru",
+        wines: [
+            { icon:"🍷", producer:"Vinogradništvo Repnik · Ritoznoj", name:"Ritoznojčan PTP", price:"6 €", eco:false, text:"Prijetno lahkotna sadnost z osvežujočim ravnotežjem. Razigranost in rusikalnost Ritoznojev v kozarcu. Zaščiteno tradicionalno poreklo.", note:"Po domače: točimo ga z Radenko 1 : 1, z ledom." },
+            { icon:"🍷", producer:"Vinogradništvo Repnik · Ritoznoj", name:"Kerner", price:"8 €", eco:false, text:"Aromatična sorta z nežnimi cvetličnimi notami in sočnim sadnim okusom. Elegantna in rahlo sladkotna — idealna za tiste, ki radi posežejo po mehkejšem, zaobljenem vinu." },
+            { icon:"🍷", producer:"Vina Martinus · Ritoznoj", name:"Renski Rizling", price:"10 €", eco:true, text:"Vonj po suhem sadju in nežnih začimbah, okus krepak in živahen. Ena najprestižnejših belih sort na svetu — pri nas doma na štajerskih gričih.", note:"Po domače: točimo ga z Radenko 1 : 1, z ledom." },
+            { icon:"🍷", producer:"Vina Martinus · Ritoznoj", name:"Rumeni Muškat", price:"12 €", eco:true, text:"Intenzivna aromatičnost, cvetlične note in prepoznaven vonj po muškatnem oreščku. Sladkoben, nežen, poln poletnega vzdušja. Pije se sam — ne rabi ničesar zraven." },
+            { icon:"🧡", producer:"Vina Martinus · Ritoznoj", name:"Orange Wine", price:"25 €", eco:true, text:"Ni rožé, ni belo. Belo grozdje macerirano s kožicami vsaj 28 dni — pogosto cel lunin cikel. Jantarne barve, polnega okusa, z značajem ki ga navadna bela vina nimajo. Biodinamično pridelano: brez dodatkov v kleti, vsaka steklenica je drugačna.", note:"Odlično k hrani — siru, divjačini, pečeni zelenjavi." },
+            { icon:"🥃", producer:"Vina Martinus · Ritoznoj", name:"Vinjak Pečovnik", price:"55 €", eco:false, text:"Domač vinjak iz kleti Pečovnik. Pravi lokalni destilat, pridelan z enako skrbnostjo kot vina s te domačije." },
+            { icon:"🥂", producer:"Jeruzalem Ormož · Prlekija", name:"Muškatna Penina", price:"20 €", eco:false, text:"Zlato rumena penina z nežnimi mehurčki in jasno muškatno cvetico. Note grozdja, hruške in ananasa — lahkotna, živahna, osvežujoča. Idealna za začetek večera ali kar tako.", note:"" },
+            { icon:"💧", producer:"", name:"Radenska mineralna voda", price:"2 €", eco:false, text:"Priporočamo k Ritoznojčanu in Renskemu rizlingu — 1 : 1, z ledom, tako kot ga pijejo pri nas.", note:"" }
+        ],
+        services: [
+            { icon:"🌲", tag:"Po dogovoru", title:"Gozdna terapija", text:"Vodena izkušnja čuječnosti v pohorskem gozdu z licencirano gozdno terapevtko. Upočasnite, zadihajte globoko in se povežite z naravo." },
+            { icon:"💆", tag:"Po dogovoru", title:"Masaža glave", text:"Sproščujoča masaža glave in lasišča. Popolna po dnevu pohodništva ali smučanja. Naročite vnaprej." },
+            { icon:"🤲", tag:"Po dogovoru", title:"Fascialna masaža", text:"Globinska fascialna tehnika masaže za sproščanje mišičnih napetosti in okrevanje telesa. Posebej priporočljivo po telesni aktivnosti." },
+            { icon:"🌳", tag:"Po dogovoru", title:"Gozdno doživetje", text:"Vodeni čutni sprehod v pohorskem gozdu — počasnejši, zavestni način doživljanja narave v okolici hiše." },
+            { icon:"🧺", tag:"Po dogovoru", title:"Zajtrk košarica", text:"Košarica lokalnih dobrot dostavljena do vrat: sveži kruh, mlečni izdelki, med in sezonsko sadje. Naročite večer prej." }
+        ]
+    },
+
+    de: {
+        hero_title: "Willkommen bei Hiša pod lipo",
+        hero_subtitle: "Apartment Lipa · Nova Gora nad Slovensko Bistrico · Ihr Zuhause in den Hügeln der Steiermark",
+        nav_apartment: "🏠 Apartment", nav_activities: "🏃 Aktivitäten",
+        nav_attractions: "🌿 Sehenswürdigkeiten", nav_food: "🍽️ Essen & Trinken",
+        nav_practical: "ℹ️ Praktisches", nav_extras: "✨ Zusatzangebote",
+        apt_title: "Apartment Lipa",
+        checkin_label: "Check-in", checkin_value: "ab 16:00 Uhr",
+        checkout_label: "Check-out", checkout_value: "bis 11:00 Uhr",
+        parking_label: "Parken", parking_value: "Garage",
+        parking_note: "🚗 Parktipp: Wir empfehlen, am Kreuzweg unterhalb des Hauses zu wenden, den Hügel hinaufzufahren und rückwärts in die Garage einzuparken. Der Weg ist steil und etwas schmäler als gewohnt — das Rückwärtseinfahren ist deutlich einfacher.",
+        wifi_network_label: "Netzwerk", wifi_password_label: "Passwort",
+        rules_title: "Hausregeln",
+        rule_1: "Rauchen im Apartment ist nicht gestattet",
+        rule_2: "Ruhezeiten: 22:00 – 08:00 Uhr",
+        rule_3: "Haustiere sind herzlich willkommen",
+        rule_4: "Bitte Müll in die vorgesehenen Behälter sortieren",
+        rule_5: "Schäden bitte sofort melden",
+        rule_6: "Bitte räumen Sie die Wohnung vor der Abreise auf",
+        sauna_title: "Sauna",
+        sauna_heading: "So starten Sie die Sauna",
+        sauna_s1: "Linker Knopf: drehen und Zeit einstellen — ganz bis auf Max.",
+        sauna_s2: "Auf der rechten Seite befinden sich zwei Zifferblätter. Nutzen Sie das mit den Zahlen 1–4 und schwarzen Ziffern auf weißem Hintergrund — auf 4 drehen.",
+        sauna_s3: "Nach ca. 1 Minute spüren Sie Wärme von den Steinen.",
+        sauna_s4: "Während der Saunasitzung etwas Wasser über die Steine gießen für Dampf.",
+        sauna_tip: "Beste Wirkung: mindestens 1 Stunde vor Nutzung einschalten.",
+        activities_title: "Aktivitäten",
+        season_summer: "☀️ Sommer",
+        season_winter: "❄️ Winter",
+        season_year: "🔁 Ganzjährig",
+        activities_summer: [
+            { icon:"🏊", title:"Schwimmbad Slovenska Bistrica", url:"https://www.google.com/maps/search/?api=1&query=Bazen+Slovenska+Bistrica", text:"Öffentliches Freibad — ideal für heiße Sommertage. Liegewiese und Kinderbecken. Ganztag: 5 €.<br><small>Partizanska 35 · <a href='https://www.zavod-sport-sb.si' target='_blank'>zavod-sport-sb.si</a></small>" },
+            { icon:"🌿", title:"Pot med krošnjami — Rogla", url:"https://www.google.com/maps/search/?api=1&query=Pot+med+kro%C5%A1njami+Pohorje", text:"900 m langer Baumwipfelpfad bis 30 m über dem Boden im Pohorje-Wald. Auf dem Rogla-Plateau (1.517 m). Für alle Altersgruppen — kombinierbar mit der Gondelfahrt.<br><small><a href='https://www.rogla.eu' target='_blank'>rogla.eu</a></small>" },
+            { icon:"⛰️", title:"Bistriški Vintgar", url:"https://www.google.com/maps/search/?api=1&query=Bistri%C5%A1ki+Vintgar", text:"Beeindruckende 4 km lange Schlucht — freier Eintritt. Šum-Wasserfall (13 m), römischer Steinbruch, Festungsruinen aus dem 4. Jh. Einfacher Waldweg, ca. 1,5 Std." },
+            { icon:"🏔️", title:"Mariborsko Pohorje — Sommer", url:"https://www.google.com/maps/search/?api=1&query=Mariborsko+Pohorje", text:"Mit der Gondel aus Maribor auf 1.347 m — Panoramablicke, Mountainbiken, Wandern und der bekannte Bike Park. Auch Paragliding und Sommerrodelbahn.<br><small><a href='https://www.mariborsko-pohorje.si' target='_blank'>mariborsko-pohorje.si</a></small>" }
+        ],
+        activities_winter: [
+            { icon:"⛷️", title:"Skigebiet Jakec — Trije Kralji", url:"https://www.google.com/maps/search/?api=1&query=Hotel+Jakec+Trije+Kralji", text:"4 Pisten zwischen 1.200 und 1.347 m. Tagesticket ab 21,50 €. Skischule, Verleih und Restaurant vor Ort. Perfekt für Familien und Anfänger.<br><small><a href='https://www.jakec.si' target='_blank'>jakec.si</a></small>" },
+            { icon:"🎿", title:"Skigebiet Rogla", url:"https://www.google.com/maps/search/?api=1&query=Rogla+Pohorje", text:"Sloweniens schneereichstes Skigebiet auf 1.517 m. 16 km präparierte Pisten, Langlauf und Schneeschuhwandern — durchgehend die besten Schneebedingungen der Region.<br><small><a href='https://www.rogla.eu' target='_blank'>rogla.eu</a></small>" },
+            { icon:"🏔️", title:"Mariborsko Pohorje — Skifahren", url:"https://www.google.com/maps/search/?api=1&query=Mariborsko+Pohorje", text:"Sloweniens größtes Skigebiet — 40 km Pisten, moderne Lifte. Heimstätte des Goldenen Fuchses (Weltcup-Slalom). Nur 30 Min. von Slovenska Bistrica.<br><small><a href='https://www.mariborsko-pohorje.si' target='_blank'>mariborsko-pohorje.si</a></small>" }
+        ],
+        activities_year: [
+            { icon:"🧗", title:"Kletterzentrum SB", url:"https://www.google.com/maps/search/?api=1&query=Plezalni+center+Slovenska+Bistrica", text:"3.200 m² Kletterflächen, Wände bis 17 m, 170+ Routen, Boulderzone und Fitnessstudio. Für alle Level. Bar im Haus.<br><small>Slovenska Bistrica · <a href='https://www.pcsb.si' target='_blank'>pcsb.si</a></small>" },
+            { icon:"🖤", title:"Črno jezero (Schwarzer See)", url:"https://www.google.com/maps/search/?api=1&query=%C4%8Crno+jezero+Pohorje", text:"Mystischer Bergsee auf 1.200 m im Pohorje. Die dunkle Farbe stammt von organischem Sediment, das Wasser ist glasklar. 20 Gehminuten vom Dom na Osankarici — ein Geheimtipp." }
+        ],
+        attr_title: "Sehenswürdigkeiten",
+        attractions: [
+            { icon:"⛰️", title:"Bistriški Vintgar", url:"https://www.google.com/maps/search/?api=1&query=Bistri%C5%A1ki+Vintgar", text:"Beeindruckende 4 km lange Schlucht — freier Eintritt. Šum-Wasserfall (13 m), römischer Steinbruch, Festungsruinen aus dem 4. Jh. Einfacher Waldweg, ca. 1,5 Std." },
+            { icon:"🏰", title:"Burg Slovenska Bistrica", url:"https://www.google.com/maps/search/?api=1&query=Grad+Slovenska+Bistrica", text:"Renaissance-Barockburg aus dem 13. Jh. mit 15 Museumssammlungen, Burgweinkeller und historischer Küche.<br><small>Di–Fr 9:00–17:00, Sa 11:00–15:00 (Apr–Okt) · <a href='https://www.grad-slovenska-bistrica.si' target='_blank'>grad-slovenska-bistrica.si</a></small>" },
+            { icon:"🏨", title:"Hotel Jakec — Trije Kralji", url:"https://www.google.com/maps/search/?api=1&query=Hotel+Jakec+Trije+Kralji", text:"Berghotel und Skigebiet auf dem Pohorje, 1.200–1.347 m. Tolles Restaurant und gemütliche Atmosphäre das ganze Jahr." },
+            { icon:"🍷", title:"Vina Martinus", url:"https://www.google.com/maps/search/?api=1&query=Vina+Martinus+Ritoznoj", text:"Bio-zertifiziertes Weingut an den Pohorje-Hängen. Verkostungen nach Vereinbarung. Alle Weine biodynamisch erzeugt.<br><small>Ritoznoj · <a href='https://martinus.si' target='_blank'>martinus.si</a></small>" },
+            { icon:"⛪", title:"Jernejeva pot", url:"https://www.google.com/maps/search/?api=1&query=Jernejeva+pot+Slovenska+Bistrica", text:"12 km Pilgerweg zu 5 historischen Kirchen um Slovenska Bistrica — ideal für eine halbtägige Wanderung." },
+            { icon:"🖤", title:"Črno jezero (Schwarzer See)", url:"https://www.google.com/maps/search/?api=1&query=%C4%8Crno+jezero+Pohorje", text:"Geheimnisvoller Bergsee auf 1.200 m. Dunkle Farbe durch organisches Sediment, glasklares Wasser. 20 Min. Fußweg vom Dom na Osankarici — ein Geheimtipp." }
+        ],
+        food_title: "Essen & Trinken",
+        food: [
+            { icon:"🍕", title:"Picerija Gams", tag:"Pizza · Toll für Familien", url:"https://www.google.com/maps/search/?api=1&query=Picerija+Gams+Zgornja+Bistrica", text:"Beliebte Pizzeria mit holzbefeuertem Ofen. 30+ Pizzasorten, familienfreundlich und schneller Service.<br><small>Zgornja Bistrica 25 · So–Do 9–22, Fr–Sa 9–23 · <a href='tel:+38602843099' onclick='event.stopPropagation()'>02 843 09 99</a></small>" },
+            { icon:"🍕", title:"Picerija Puj Sem", tag:"Pizza", url:"https://www.google.com/maps/search/?api=1&query=Picerija+Puj+Sem+Slovenska+Bistrica", text:"Neapolitanische Pizza aus dem Steinofen. Bewertet mit 4,7/5 — qualitativ hochwertige Zutaten.<br><small>Ljubljanska cesta 39 · <a href='tel:+38664237919' onclick='event.stopPropagation()'>064 237 919</a></small>" },
+            { icon:"🍔", title:"Restavracija Plac", tag:"Restaurant", url:"https://www.google.com/maps/search/?api=1&query=Restavracija+Plac+Slovenska+Bistrica", text:"TripAdvisors #1 in Slovenska Bistrica. Berühmt für die besten Burger der Steiermark — auch Steaks, Pasta &amp; Salate.<br><small>Kajuhova 60a · Mo–Fr 11–21:30, Sa 12–21:30, So 12–17:30 · <a href='tel:+38631503654' onclick='event.stopPropagation()'>031 503 654</a></small>" },
+            { icon:"🍲", title:"Gostilna pri Martinu", tag:"Gasthaus", url:"https://www.google.com/maps/search/?api=1&query=Gostilna+pri+Martinu+Slovenska+Bistrica", text:"Gemütliches Gasthaus mit authentischer slowenischer Küche und Tagesmenüs.<br><small>Kolodvorska 25 · <a href='tel:+38628182018' onclick='event.stopPropagation()'>02 818 20 18</a></small>" },
+            { icon:"🧀", title:"Wochenmarkt", tag:"Markt · Samstag früh", url:"https://www.google.com/maps/search/?api=1&query=Grad+Slovenska+Bistrica", text:"Jeden Samstagmorgen im Burghof von Grad Slovenska Bistrica. Frische Lokalprodukte, Honig, handwerkliche Käse und saisonale Spezialitäten." },
+            { icon:"🛒", title:"Supermärkte", tag:"Einkauf", text:"Nächster: <a href='https://www.google.com/maps/search/?api=1&query=%C5%A0PAR+Slovenska+Bistrica' target='_blank'>ŠPAR</a>. Außerdem: <a href='https://www.google.com/maps/search/?api=1&query=Merkator+Slovenska+Bistrica' target='_blank'>Merkator</a>, <a href='https://www.google.com/maps/search/?api=1&query=Lidl+Slovenska+Bistrica' target='_blank'>Lidl</a>, <a href='https://www.google.com/maps/search/?api=1&query=Hofer+Slovenska+Bistrica' target='_blank'>Hofer</a>. (~5 km, täglich geöffnet)" }
+        ],
+        practical_title: "Praktische Informationen",
+        emergency_title: "Notrufnummern",
+        emg_general: "Notruf", emg_police: "Polizei",
+        emg_fire: "Feuerwehr", emg_ambulance: "Rettungsdienst",
+        host_title: "Ihr Gastgeber",
+        host_desc: "Wir stehen Ihnen für alle Fragen zur Verfügung.",
+        host_no_answer: "Falls keine Antwort, bitte anrufen:",
+        emg_vet: "Tierarzt Notfall",
+        footer_text: "Wir wünschen Ihnen einen wunderschönen Aufenthalt!",
+        practical: [
+            { icon:"🚗", title:"Mobilität", text:"Nova Gora liegt ~5 km vom Zentrum entfernt. Auto empfohlen.<br>Maribor: 30 Min. · Ljubljana: ~1 Std. · Mietwagen in Maribor oder Sl. Bistrica." },
+            { icon:"📱", title:"Nützliche Apps", list:["Google Maps / Waze — Navigation","Meteo.si — Wettervorhersage","Bolt — Fahrdienst ab Maribor"] },
+            { icon:"🗺️", title:"Touristisches Informationszentrum", url:"https://tic-sb.si", text:"Für Karten und Veranstaltungsinfos: TIC Slovenska Bistrica.<br><small>Trg svobode 17 · <a href='tel:+38628430810' onclick='event.stopPropagation()'>02 843 08 10</a> · tic-sb.si</small>" },
+            { icon:"🐾", title:"Tierarzt Notfall", url:"https://www.google.com/maps/search/?api=1&query=veterinarska+ambulanta+Slovenska+Bistrica", text:"Tierärztlicher Notdienst für den Bereich Slovenska Bistrica. Klicken für die nächste Tierarztpraxis auf Google Maps.<br><small>Veterinärpoliklinik Maribor (24h): <a href='tel:+38623335100' onclick='event.stopPropagation()'>02 333 51 00</a></small>" },
+            { icon:"🌐", title:"Sprachtipps", text:"Amtssprache: Slowenisch. Englisch und Deutsch oft verstanden.<br>Hallo = <em>Zdravo</em> · Danke = <em>Hvala</em> · Bitte = <em>Prosim</em> · Prost! = <em>Na zdravje!</em>" }
+        ],
+        extras_title: "Zusatzangebote",
+        extras_drinks_title: "Mini Bar — Lokale Weine & Getränke",
+        extras_services_title: "Buchbare Leistungen",
+        wines: [
+            { icon:"🍷", producer:"Vinogradništvo Repnik · Ritoznoj", name:"Ritoznojčan PTP", price:"6 €", eco:false, text:"Angenehm leicht mit frischer Fruchtigkeit — der Charakter von Ritoznoj im Glas. Geschützte traditionelle Herkunftsbezeichnung.", note:"Lokale Tradition: 1:1 mit Radenska Mineralwasser und Eis servieren." },
+            { icon:"🍷", producer:"Vinogradništvo Repnik · Ritoznoj", name:"Kerner", price:"8 €", eco:false, text:"Aromatische Sorte mit zarten Blütennoten und saftigem Fruchtgeschmack. Elegant und leicht süßlich — ideal für alle, die weichere Weißweine bevorzugen." },
+            { icon:"🍷", producer:"Vina Martinus · Ritoznoj", name:"Renski Rizling", price:"10 €", eco:true, text:"Aromen von getrocknetem Obst und feinen Gewürzen, lebhafter voller Geschmack. Eine der prestigeträchtigsten Weißweinsorten der Welt — zuhause auf den steirischen Hügeln.", note:"Lokale Tradition: 1:1 mit Radenska Mineralwasser und Eis." },
+            { icon:"🍷", producer:"Vina Martinus · Ritoznoj", name:"Rumeni Muškat", price:"12 €", eco:true, text:"Intensive Aromen, Blütennoten und der unverkennbare Muskatduft. Süßlich, zart, voller Sommercharakter — am besten pur genossen." },
+            { icon:"🧡", producer:"Vina Martinus · Ritoznoj", name:"Orange Wine", price:"25 €", eco:true, text:"Kein Rosé, kein Weißwein. Weiße Trauben mindestens 28 Tage auf den Schalen mazeriert — bernsteinfarben, vollmundig, mit einem Charakter den gewöhnliche Weißweine nicht haben. Biodynamisch: ohne Kellerzusätze, jede Flasche einzigartig.", note:"Perfekt zu Essen: Käse, Wild, geröstetes Gemüse." },
+            { icon:"🥃", producer:"Vina Martinus · Ritoznoj", name:"Vinjak Pečovnik", price:"55 €", eco:false, text:"Hausbrand aus dem Pečovnik-Keller. Ein echter lokaler Destillat, mit derselben Sorgfalt hergestellt wie die Weine des Guts." },
+            { icon:"🥂", producer:"Jeruzalem Ormož · Prlekija", name:"Muškatna Penina", price:"20 €", eco:false, text:"Goldgelber Schaumwein mit feinen Bläschen und klarer Muskatkernblüte. Noten von Trauben, Birne und Ananas — leicht, lebendig, erfrischend." },
+            { icon:"💧", producer:"", name:"Radenska Mineralwasser", price:"2 €", eco:false, text:"Empfohlen zu Ritoznojčan PTP und Renski Rizling — 1:1 mit Eis, so wie es die Einheimischen trinken." }
+        ],
+        services: [
+            { icon:"🌲", tag:"Auf Anfrage", title:"Waldtherapie", text:"Geführte Achtsamkeitserfahrung im Pohorje-Wald mit einer lizenzierten slowenischen Waldtherapeutin. Entschleunigen, tief atmen, mit der Natur verbinden." },
+            { icon:"💆", tag:"Auf Anfrage", title:"Kopfmassage", text:"Entspannende Kopf- und Kopfhautmassage. Perfekt nach einem Wander- oder Skitag. Im Voraus buchen." },
+            { icon:"🤲", tag:"Auf Anfrage", title:"Faszienmassage", text:"Tiefengewebige Faszientechnik zur Muskelentspannung und Erholung. Besonders empfohlen nach körperlicher Aktivität." },
+            { icon:"🌳", tag:"Auf Anfrage", title:"Walderlebnis", text:"Geführter Sinnesspaziergang im Pohorje-Wald — eine achtsame Art, die Natur rund ums Haus zu erleben." },
+            { icon:"🧺", tag:"Auf Anfrage", title:"Frühstückskorb", text:"Ein Korb mit lokalen Produkten vor die Tür geliefert: frisches Brot, Milchprodukte, Honig und Saisonobst. Abends zuvor bestellen." }
+        ]
+    },
+
+    hr: {
+        hero_title: "Dobrodošli u Hišu pod lipo",
+        hero_subtitle: "Apartman Lipa · Nova Gora nad Slovensko Bistrico · Vaš dom u brdima Štajerske",
+        nav_apartment: "🏠 Apartman", nav_activities: "🏃 Aktivnosti",
+        nav_attractions: "🌿 Atrakcije", nav_food: "🍽️ Hrana i piće",
+        nav_practical: "ℹ️ Praktično", nav_extras: "✨ Dodatna ponuda",
+        apt_title: "Apartman Lipa",
+        checkin_label: "Prijava", checkin_value: "od 16:00",
+        checkout_label: "Odjava", checkout_value: "do 11:00",
+        parking_label: "Parkiranje", parking_value: "Garaža",
+        parking_note: "🚗 Savjet za parkiranje: preporučujemo da se okrenete na raskrižju ispod kuće, vozite se uz brdo i ukozite unatrag u garažu. Put je strm i nešto uži od uobičajenog — ulaz unatrag je znatno lakši.",
+        wifi_network_label: "Mreža", wifi_password_label: "Lozinka",
+        rules_title: "Kućni red",
+        rule_1: "Pušenje u apartmanu nije dozvoljeno",
+        rule_2: "Tihi sati: 22:00 – 08:00",
+        rule_3: "Kućni ljubimci su dobrodošli",
+        rule_4: "Molimo razvrstajte otpad u označene kante",
+        rule_5: "Svaku štetu odmah prijavite",
+        rule_6: "Molimo pospremite apartman prije odlaska",
+        sauna_title: "Sauna",
+        sauna_heading: "Kako uključiti saunu",
+        sauna_s1: "Lijevi gumb: okrenite i podesite vrijeme — sve do maksa.",
+        sauna_s2: "Na desnoj strani nalaze se dva kotačića. Koristite onaj s brojevima 1–4 s crnim brojevima na bijeloj podlozi — okrenite na 4.",
+        sauna_s3: "Nakon otprilike 1 minute osjetit ćete toplinu koja se širi iz kamena.",
+        sauna_s4: "Tijekom saune prelijte malo vode po kamenju za paru.",
+        sauna_tip: "Najbolji učinak: uključite saunu najmanje 1 sat prije korištenja.",
+        activities_title: "Aktivnosti",
+        season_summer: "☀️ Ljeto",
+        season_winter: "❄️ Zima",
+        season_year: "🔁 Cijelu godinu",
+        activities_summer: [
+            { icon:"🏊", title:"Bazen Slovenska Bistrica", url:"https://www.google.com/maps/search/?api=1&query=Bazen+Slovenska+Bistrica", text:"Javni vanjski bazen — idealan za vruće ljetne dane. Travnjaci za sunčanje i dječji bazen. Cijeli dan: 5 €.<br><small>Partizanska 35 · <a href='https://www.zavod-sport-sb.si' target='_blank'>zavod-sport-sb.si</a></small>" },
+            { icon:"🌿", title:"Pot med krošnjami — Rogla", url:"https://www.google.com/maps/search/?api=1&query=Pot+med+kro%C5%A1njami+Pohorje", text:"900 m staza kroz krošnje stabala do 30 m iznad tla u pohorskoj šumi. Na platou Rogla (1.517 m). Pogodno za sve uzraste — kombinirajte s vožnjom gondolom.<br><small><a href='https://www.rogla.eu' target='_blank'>rogla.eu</a></small>" },
+            { icon:"⛰️", title:"Bistriški Vintgar", url:"https://www.google.com/maps/search/?api=1&query=Bistri%C5%A1ki+Vintgar", text:"Veličanstvena 4 km duga klisura potoka Bistrica — ulaz besplatan. Vodopad Šum (13 m), rimski kamenolom i ruševine tvrđave iz 4. st. Lagana šumska staza, ~1,5 h u jednom smjeru." },
+            { icon:"🏔️", title:"Mariborsko Pohorje — Ljeto", url:"https://www.google.com/maps/search/?api=1&query=Mariborsko+Pohorje", text:"Gondolom iz Maribora na 1.347 m za panoramske poglede, planinarenje i brdski biciklizam. Dostupni paragliding i ljetni tobogan.<br><small><a href='https://www.mariborsko-pohorje.si' target='_blank'>mariborsko-pohorje.si</a></small>" }
+        ],
+        activities_winter: [
+            { icon:"⛷️", title:"Skijalište Jakec — Trije Kralji", url:"https://www.google.com/maps/search/?api=1&query=Hotel+Jakec+Trije+Kralji", text:"4 staze između 1.200 i 1.347 m n.v. Dnevna karta za odrasle od 21,50 €. Škola skijanja, iznajmljivanje opreme i restoran na licu mjesta.<br><small><a href='https://www.jakec.si' target='_blank'>jakec.si</a></small>" },
+            { icon:"🎿", title:"Skijalište Rogla", url:"https://www.google.com/maps/search/?api=1&query=Rogla+Pohorje", text:"Najsnježnije skijalište u Sloveniji na 1.517 m. 16 km uređenih staza, skijaško trčanje i krplje — dosljedno najbolja snježna situacija u regiji.<br><small><a href='https://www.rogla.eu' target='_blank'>rogla.eu</a></small>" },
+            { icon:"🏔️", title:"Mariborsko Pohorje — Skijanje", url:"https://www.google.com/maps/search/?api=1&query=Mariborsko+Pohorje", text:"Najveće skijalište u Sloveniji — 40 km staza, moderni žičnjaci. Domaćin Zlatne lisice (Svjetski kup). Samo 30 min od Sl. Bistrice.<br><small><a href='https://www.mariborsko-pohorje.si' target='_blank'>mariborsko-pohorje.si</a></small>" }
+        ],
+        activities_year: [
+            { icon:"🧗", title:"Penjački centar SB", url:"https://www.google.com/maps/search/?api=1&query=Plezalni+center+Slovenska+Bistrica", text:"3.200 m² penjačkih površina, zidovi do 17 m, 170+ smjerova, bouldering i teretana. Za sve razine.<br><small>Slovenska Bistrica · <a href='https://www.pcsb.si' target='_blank'>pcsb.si</a></small>" },
+            { icon:"🖤", title:"Črno jezero (Crno jezero)", url:"https://www.google.com/maps/search/?api=1&query=%C4%8Crno+jezero+Pohorje", text:"Mistično gorsko jezero na 1.200 m na Pohorju. Tamna boja dolazi od organskih sedimenata, voda je kristalno bistra. 20 min hoda od Doma na Osankarici — lokalni dragulj." }
+        ],
+        attr_title: "Lokalne atrakcije",
+        attractions: [
+            { icon:"⛰️", title:"Bistriški Vintgar", url:"https://www.google.com/maps/search/?api=1&query=Bistri%C5%A1ki+Vintgar", text:"Veličanstvena 4 km duga klisura potoka Bistrica — ulaz besplatan. Vodopad Šum (13 m), rimski kamenolom i ruševine tvrđave iz 4. st. Lagana šumska staza, ~1,5 h." },
+            { icon:"🏰", title:"Dvorac Slovenska Bistrica", url:"https://www.google.com/maps/search/?api=1&query=Grad+Slovenska+Bistrica", text:"Renesansno-barokni dvorac iz 13. st. s 15 muzejskih zbirki, vinskim podrumom i dvoranskom kuhinjom.<br><small>Uto–pet 9:00–17:00, sub 11:00–15:00 · <a href='https://www.grad-slovenska-bistrica.si' target='_blank'>grad-slovenska-bistrica.si</a></small>" },
+            { icon:"🏨", title:"Hotel Jakec — Trije Kralji", url:"https://www.google.com/maps/search/?api=1&query=Hotel+Jakec+Trije+Kralji", text:"Planinski hotel i skijalište na Pohorju, 1.200–1.347 m. Odlični pogledi i restoran otvoren za sve posjetitelje." },
+            { icon:"🍷", title:"Vina Martinus", url:"https://www.google.com/maps/search/?api=1&query=Vina+Martinus+Ritoznoj", text:"Ekološki certificirana vinarija na padinama Pohorja. Degustacije po dogovoru. Sva vina biodinamički uzgojena.<br><small>Ritoznoj · <a href='https://martinus.si' target='_blank'>martinus.si</a></small>" },
+            { icon:"⛪", title:"Jernejeva pot", url:"https://www.google.com/maps/search/?api=1&query=Jernejeva+pot+Slovenska+Bistrica", text:"12 km označena staza koja spaja 5 povijesnih crkava oko Sl. Bistrice — savršeno za poludnevnu šetnju." },
+            { icon:"🖤", title:"Črno jezero (Crno jezero)", url:"https://www.google.com/maps/search/?api=1&query=%C4%8Crno+jezero+Pohorje", text:"Mistično gorsko jezero na 1.200 m između Osankarice i Velikog vrha. Tamna boja, kristalno bistra voda. 20 min hoda od Doma na Osankarici. Vrijedi svake minute." }
+        ],
+        food_title: "Hrana i piće",
+        food: [
+            { icon:"🍕", title:"Picerija Gams", tag:"Pizza · Odlično za obitelji", url:"https://www.google.com/maps/search/?api=1&query=Picerija+Gams+Zgornja+Bistrica", text:"Popularna pizzeria s krušnom peći na drva. 30+ vrsta pizza, obiteljska atmosfera i brza usluga.<br><small>Zgornja Bistrica 25 · ned–čet 9–22, pet–sub 9–23 · <a href='tel:+38602843099' onclick='event.stopPropagation()'>02 843 09 99</a></small>" },
+            { icon:"🍕", title:"Picerija Puj Sem", tag:"Pizza", url:"https://www.google.com/maps/search/?api=1&query=Picerija+Puj+Sem+Slovenska+Bistrica", text:"Napolitanska pizza iz kamene peći. Ocjenjena 4,7/5 — kvalitetni sastojci, brzo i ukusno.<br><small>Ljubljanska cesta 39 · <a href='tel:+38664237919' onclick='event.stopPropagation()'>064 237 919</a></small>" },
+            { icon:"🍔", title:"Restavracija Plac", tag:"Restoran", url:"https://www.google.com/maps/search/?api=1&query=Restavracija+Plac+Slovenska+Bistrica", text:"#1 na TripAdvisoru u Sl. Bistrici. Poznato po najboljim burgerima u Štajerskoj — i steakovi, tjestenine &amp; salate.<br><small>Kajuhova 60a · pon–pet 11–21:30, sub 12–21:30, ned 12–17:30 · <a href='tel:+38631503654' onclick='event.stopPropagation()'>031 503 654</a></small>" },
+            { icon:"🍲", title:"Gostilna pri Martinu", tag:"Gostionica", url:"https://www.google.com/maps/search/?api=1&query=Gostilna+pri+Martinu+Slovenska+Bistrica", text:"Ugodan tradicionalni restoran sa slovenskom kuhinjom i dnevnim ručkovima.<br><small>Kolodvorska 25 · <a href='tel:+38628182018' onclick='event.stopPropagation()'>02 818 20 18</a></small>" },
+            { icon:"🧀", title:"Tjedna tržnica", tag:"Tržnica · Subota ujutro", url:"https://www.google.com/maps/search/?api=1&query=Grad+Slovenska+Bistrica", text:"Svake subote ujutro u dvorištu dvorca Slovenska Bistrica. Svježi lokalni proizvodi, med, sirevi i sezonske posebitosti." },
+            { icon:"🛒", title:"Supermarketi", tag:"Kupovina", text:"Najbliži: <a href='https://www.google.com/maps/search/?api=1&query=%C5%A0PAR+Slovenska+Bistrica' target='_blank'>ŠPAR</a>. Također: <a href='https://www.google.com/maps/search/?api=1&query=Merkator+Slovenska+Bistrica' target='_blank'>Merkator</a>, <a href='https://www.google.com/maps/search/?api=1&query=Lidl+Slovenska+Bistrica' target='_blank'>Lidl</a>, <a href='https://www.google.com/maps/search/?api=1&query=Hofer+Slovenska+Bistrica' target='_blank'>Hofer</a>. (~5 km, otvoreno svaki dan)" }
+        ],
+        practical_title: "Praktične informacije",
+        emergency_title: "Hitni brojevi",
+        emg_general: "Hitna pomoć", emg_police: "Policija",
+        emg_fire: "Vatrogasci", emg_ambulance: "Hitna",
+        host_title: "Vaš domaćin",
+        host_desc: "Dostupni smo za sva pitanja.",
+        host_no_answer: "Ako ne odgovorim, nazovite:",
+        emg_vet: "Hitna vet. pomoć",
+        footer_text: "Nadamo se da ćete imati divan boravak!",
+        practical: [
+            { icon:"🚗", title:"Prijevoz", text:"Nova Gora je ~5 km od centra Sl. Bistrice. Preporučujemo auto.<br>Maribor: 30 min · Ljubljana: ~1 sat · Rent-a-car u Mariboru ili Sl. Bistrici." },
+            { icon:"📱", title:"Korisne aplikacije", list:["Google Maps / Waze — navigacija","Meteo.si — slovenska prognoza","Bolt — taksi iz Maribora"] },
+            { icon:"🗺️", title:"Turistički informacijski centar", url:"https://tic-sb.si", text:"Za karte i info o događanjima: TIC Slovenska Bistrica.<br><small>Trg svobode 17 · <a href='tel:+38628430810' onclick='event.stopPropagation()'>02 843 08 10</a> · tic-sb.si</small>" },
+            { icon:"🐾", title:"Hitna veterinarska pomoć", url:"https://www.google.com/maps/search/?api=1&query=veterinarska+ambulanta+Slovenska+Bistrica", text:"Hitna veterinarska pomoć za područje Sl. Bistrice. Kliknite za najbližu veterinarsku ambulantu na Google Maps.<br><small>Veterinarska poliklinika Maribor (24h): <a href='tel:+38623335100' onclick='event.stopPropagation()'>02 333 51 00</a></small>" },
+            { icon:"🌐", title:"Jezični savjeti", text:"Službeni jezik: slovenščina. Engleski razumljiv.<br>Zdravo · Hvala · Prosim · Na zdravje! 🥂" }
+        ],
+        extras_title: "Dodatna ponuda",
+        extras_drinks_title: "Mini Bar — Lokalna vina i pića",
+        extras_services_title: "Usluge na zahtjev",
+        wines: [
+            { icon:"🍷", producer:"Vinogradništvo Repnik · Ritoznoj", name:"Ritoznojčan PTP", price:"6 €", eco:false, text:"Ugodno lagano s osvježavajućom voćnom ravnotežom. Karakter i rustikalnost Ritoznoj regije u čaši. Zaštićena tradicionalna oznaka.", note:"Lokalna tradicija: poslužite 1:1 s Radenskom i ledom." },
+            { icon:"🍷", producer:"Vinogradništvo Repnik · Ritoznoj", name:"Kerner", price:"8 €", eco:false, text:"Aromatična sorta s nježnim cvjetnim notama i sočnim voćnim okusom. Elegantna i blago slatka — idealna za one koji preferiraju mekša bijela vina." },
+            { icon:"🍷", producer:"Vina Martinus · Ritoznoj", name:"Renski Rizling", price:"10 €", eco:true, text:"Aroma suhog voća i nježnih začina, živahen i pun okus. Jedna od najprestižnijih bijelih sorti na svijetu — kod kuće na štajerskim bregovima.", note:"Lokalna tradicija: poslužite 1:1 s Radenskom i ledom." },
+            { icon:"🍷", producer:"Vina Martinus · Ritoznoj", name:"Rumeni Muškat", price:"12 €", eco:true, text:"Intenzivna aromatičnost, cvjetne note i prepoznatljiv miris muškata. Sladak, nježan, pun ljetnog karaktera — uživajte sam." },
+            { icon:"🧡", producer:"Vina Martinus · Ritoznoj", name:"Orange Wine", price:"25 €", eco:true, text:"Nije roze, nije bijelo. Bijelo grožđe macerirano na kožicama najmanje 28 dana — jantarne boje, punog okusa s karakterom koji obična bijela vina nemaju. Biodinamska proizvodnja: bez dodataka u podrumu, svaka boca je drugačija.", note:"Savršeno uz hranu: sir, divljač, pečeno povrće." },
+            { icon:"🥃", producer:"Vina Martinus · Ritoznoj", name:"Vinjak Pečovnik", price:"55 €", eco:false, text:"Domaći vinjak iz podruma Pečovnik. Pravi lokalni destilat, izrađen s istom pažnjom kao i vina ovog imanja." },
+            { icon:"🥂", producer:"Jeruzalem Ormož · Prlekija", name:"Muškatna Penina", price:"20 €", eco:false, text:"Zlatožuto pjenušavo vino s finim mjehurićima i jasnom muškatnom aromom. Note grožđa, kruške i ananasa — lagano, živahno, osvježavajuće." },
+            { icon:"💧", producer:"", name:"Radenska mineralna voda", price:"2 €", eco:false, text:"Preporučujemo uz Ritoznojčan PTP i Renski Rizling — 1:1 s ledom, baš kako ga piju lokalni stanovnici." }
+        ],
+        services: [
+            { icon:"🌲", tag:"Na zahtjev", title:"Šumska terapija", text:"Vođeno iskustvo svjesnosti u pohorskoj šumi s licenciranom slovenskom šumskom terapeutkinjom." },
+            { icon:"💆", tag:"Na zahtjev", title:"Masaža glave", text:"Opuštajuća masaža glave i vlasišta. Savršena nakon planinarenja ili skijanja. Naručite unaprijed." },
+            { icon:"🤲", tag:"Na zahtjev", title:"Fascialna masaža", text:"Dubokotivna fascialna tehnika za opuštanje mišića i oporavak tijela. Posebno preporučeno nakon fizičke aktivnosti." },
+            { icon:"🌳", tag:"Na zahtjev", title:"Šumsko doživljavanje", text:"Vođena osjetilna šetnja pohorskom šumom — sporiji, svjesniji način doživljavanja prirode oko kuće." },
+            { icon:"🧺", tag:"Na zahtjev", title:"Košarica doručka", text:"Košarica lokalnih delicija dostavljena na vrata: svježi kruh, mliječni proizvodi, med i sezonsko voće. Naručite večer ranije." }
+        ]
+    }
+};
+
+function renderCards(id, items) {
+    if (!items) return;
+    document.getElementById(id).innerHTML = items.map(function(c) {
+        var titleHtml = c.url
+            ? '<h3>' + c.title + ' <span style="font-size:12px;opacity:0.6">&#8599;</span></h3>'
+            : '<h3>' + c.title + '</h3>';
+        var inner =
+            '<span class="card-icon">' + c.icon + '</span>' +
+            (c.tag ? '<span class="tag">' + c.tag + '</span>' : '') +
+            titleHtml +
+            (c.text ? '<p>' + c.text + '</p>' : '') +
+            (c.list ? '<ul>' + c.list.map(function(l){ return '<li>' + l + '</li>'; }).join('') + '</ul>' : '');
+        if (c.url) {
+            return '<div class="card card-link" data-href="' + c.url + '">' + inner + '</div>';
+        }
+        return '<div class="card">' + inner + '</div>';
+    }).join('');
+}
+
+// Whole-card click → open its link in a new tab. Clicks on inner links (phone,
+// website) keep working because we bail out when the click lands on an <a>.
+document.addEventListener('click', function(e) {
+    var card = e.target.closest('.card-link');
+    if (!card || e.target.closest('a')) return;
+    window.open(card.dataset.href, '_blank', 'noopener');
+});
+
+function renderWineCards(id, wines) {
+    if (!wines) return;
+    document.getElementById(id).innerHTML = wines.map(function(w) {
+        return '<div class="wine-card">' +
+            '<span class="wc-icon">' + w.icon + '</span>' +
+            (w.producer ? '<div class="wc-producer">' + w.producer + '</div>' : '') +
+            '<h3>' + w.name + '</h3>' +
+            '<div>' +
+                '<span class="wc-price">' + w.price + '</span>' +
+                (w.eco ? '<span class="wc-eco">🌿 Ekološko</span>' : '') +
+            '</div>' +
+            '<p>' + w.text + '</p>' +
+            (w.note ? '<div class="wc-note">' + w.note + '</div>' : '') +
+            '</div>';
+    }).join('');
+}
+
+function renderServiceCards(id, services) {
+    if (!services) return;
+    document.getElementById(id).innerHTML = services.map(function(s) {
+        return '<div class="service-card">' +
+            '<span class="card-icon">' + s.icon + '</span>' +
+            '<span class="on-request">' + s.tag + '</span>' +
+            '<h3>' + s.title + '</h3>' +
+            '<p>' + s.text + '</p>' +
+            '</div>';
+    }).join('');
+}
+
+function setLang(lang) {
+    var d = T[lang];
+    document.documentElement.lang = lang;
+    document.title = 'Hiša pod lipo — Apartma Lipa';
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        var v = d[el.dataset.i18n];
+        if (v !== undefined) el.textContent = v;
+    });
+    renderCards('attractions-cards', d.attractions);
+    renderCards('food-cards', d.food);
+    renderCards('practical-cards', d.practical);
+    renderCards('activities-summer-cards', d.activities_summer);
+    renderCards('activities-winter-cards', d.activities_winter);
+    renderCards('activities-year-cards', d.activities_year);
+    renderWineCards('wine-cards', d.wines);
+    renderServiceCards('services-cards', d.services);
+    document.querySelectorAll('.lang-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.getElementById('btn-' + lang).classList.add('active');
+}
+
+var auto = navigator.language.slice(0,2);
+setLang(['sl','de','hr','en'].indexOf(auto) >= 0 ? auto : 'en');
+</script>
+</body>
+</html>

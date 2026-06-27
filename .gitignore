@@ -1,0 +1,4 @@
+# Publish ONLY the guide. Keep everything else (personal files, dev helpers) private.
+/*
+!index.html
+!.gitignore
